@@ -8,6 +8,7 @@ const getAllAdminService = async (params: any) => {
     const searchableFields = ["name", "email"]
 
 
+    // partial matched 
   if (params.searchTerm) {
     addCondition.push({
       OR: searchableFields.map((field) => ({
@@ -19,6 +20,7 @@ const getAllAdminService = async (params: any) => {
     });
   }
 
+//   exect match 
   if(Object.keys(filterData).length > 0){
     addCondition.push({
         AND:Object.keys(filterData).map(field => ({
