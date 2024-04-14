@@ -6,7 +6,8 @@ import { adminFilterableFields } from "./admin__constant"
 const getAllAdminController = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const filterData =pick(req.query,adminFilterableFields)
-        const result = await adminService.getAllAdminService(filterData)
+        const options =pick(req.query,['limit','page'])
+        const result = await adminService.getAllAdminService(filterData,options)
         res.status(200).json({
             success:true,
             messege:"admin created Successfully",
