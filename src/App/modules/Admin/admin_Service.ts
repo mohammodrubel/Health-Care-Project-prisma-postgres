@@ -1,43 +1,49 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { searchableFields } from "./admin__constant";
-
-const prisma = new PrismaClient();
-
-const getAllAdminService = async (params: any,options:any) => {
-    const {limit,page}=options
-    const {searchTerm,...filterData} = params
-    const addCondition: Prisma.AdminWhereInput[] = [];
-//    console.log(params)
+import calculateNumber from "../../shared/pagination";
+import prisma from "../../shared/prisma";
 
 
-    // partial matched 
-  if (params.searchTerm) {
+
+const getAllAdminService = async (params: { searchTerm?: string }, options: { page?: number, limit?: number, sortBy?: string, sortOrder?: string }) => {
+  const { skip, limit, sortBy, sortOrder } = calculateNumber(options);
+  const { searchTerm, ...filterData }: { [key: string]: string } = params;
+  const addCondition: Prisma.AdminWhereInput[] = [];
+
+  // Partial match
+  if (searchTerm) {
     addCondition.push({
-      OR: searchableFields.map((field) => ({
+      OR: searchableFields.map(field => ({
         [field]: {
-          contains: params?.searchTerm,
+          contains: searchTerm,
           mode: "insensitive",
         },
       })),
     });
   }
 
-//   exect match 
-  if(Object.keys(filterData).length > 0){
+  // Exact match
+  if (Object.keys(filterData).length > 0) {
     addCondition.push({
-        AND:Object.keys(filterData).map(field => ({
-            [field]:{
-               equals:filterData[field]
-            }
-        }))
-    })
+      AND: Object.keys(filterData).map(field => ({
+        [field]: {
+          equals: filterData[field]
+        }
+      }))
+    });
   }
-  const whareCondition: Prisma.AdminWhereInput = { AND: addCondition };
+
+  const whereCondition: Prisma.AdminWhereInput = { AND: addCondition };
 
   const result = await prisma.admin.findMany({
-    where: whareCondition,
-    skip:Number((page -1) * limit),
-    take:Number(limit)
+    where: whereCondition,
+    skip,
+    take: limit,
+    orderBy: sortBy && sortOrder ? {
+      [sortBy]: sortOrder
+    } : {
+      createdAt: 'desc'
+    }
   });
   return result;
 };
