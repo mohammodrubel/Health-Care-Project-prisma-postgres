@@ -1,8 +1,9 @@
-import express, { Request, Response } from 'express';
-import { UserService } from './user__Service';
-const createAdminController = async(req:Request,res:Response)=>{
+import { NextFunction, Request, Response } from "express"
+import { adminService } from "./admin_Service"
+
+const getAllAdminController = async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const result = await UserService.createAdminService(req.body)
+        const result = await adminService.getAllAdminService()
         res.status(200).json({
             success:true,
             messege:"admin created Successfully",
@@ -19,6 +20,7 @@ const createAdminController = async(req:Request,res:Response)=>{
 }
 
 
-export const userController = {
-    createAdminController
+
+export const adminController = {
+    getAllAdminController
 }
