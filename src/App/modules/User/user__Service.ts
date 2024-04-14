@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient() 
 
-const createAdminService = async(data)=>{
+const createAdminService = async(data:any)=>{
 
     const hasingPassword = await bcrypt.hash(data.password,12)
     const userData = {

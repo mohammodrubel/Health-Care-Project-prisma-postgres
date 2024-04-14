@@ -3,7 +3,7 @@ import { adminService } from "./admin_Service"
 
 const getAllAdminController = async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const result = await adminService.getAllAdminService()
+        const result = await adminService.getAllAdminService(req.query)
         res.status(200).json({
             success:true,
             messege:"admin created Successfully",
@@ -13,7 +13,7 @@ const getAllAdminController = async(req:Request,res:Response,next:NextFunction)=
     catch(error){
         res.status(500).json({
             success:true,
-            messege:error?.name || "somting went wrong",
+            messege: "somting went wrong",
             error
         })
     }
