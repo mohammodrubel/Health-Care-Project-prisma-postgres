@@ -12,7 +12,8 @@ const getAllAdminController = async(req:Request,res:Response,next:NextFunction)=
         res.status(200).json({
             success:true,
             messege:"admin created Successfully",
-            data:result
+            meta:result.meta,
+            data: result.data
         })
     }
     catch(error){
