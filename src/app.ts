@@ -1,9 +1,8 @@
 import express, { Application,Request,Response,NextFunction } from 'express';
 import cors from 'cors'
-import { userRouter } from './App/modules/User/user__Router';
-import { adminRouter } from './App/modules/Admin/admin_Router';
 import router from './App/Router/GlobalRouter';
 import globalErrorHandeler from './App/Error/GlobalError';
+import notFound from './App/Error/NotFoundError';
 const app:Application =  express()
 
 app.use(cors())
@@ -14,9 +13,12 @@ app.get('/',(req:Request,res:Response)=>{
         "message":"Health Care Server"
     })
 })
-
+// API 
 app.use('/api/v1',router)
+// GLOBAL ERROR 
 app.use(globalErrorHandeler)
+// NOT FOUND 
+app.use(notFound)
 
 
 export default app
