@@ -21,12 +21,7 @@ const getAllAdminController = async (
       data:result
     })
   } catch (error) {
-    SendResponce(res,{
-      statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-      success:true,
-      message:"faild to show Admin users",
-      data:error
-    })
+   next(error)
   }
 };
 
@@ -41,12 +36,7 @@ const getSinlgeId = async (req: Request, res: Response, next: NextFunction) => {
       data:result
     })
   } catch (error) {
-    SendResponce(res,{
-      statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-      success:true,
-      message:"Single Admin fetch faield",
-      data:error
-    })
+    next(error)
   }
 };
 
@@ -62,12 +52,7 @@ const updateAdminController = async (req: Request, res: Response, next: NextFunc
       data:result
     })
   } catch (error) {
-    SendResponce(res,{
-      statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-      success:true,
-      message:"Single Admin update faield",
-      data:error
-    })
+    next(error)
   }
 };
 
@@ -82,12 +67,7 @@ const softAdminController = async (req: Request, res: Response, next: NextFuncti
       data:result
     })
   } catch (error) {
-    SendResponce(res,{
-      statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-      success:true,
-      message:"Single Admin Delete faield",
-      data:error
-    })
+    next(error)
   }
 };
 const deleteAdminController = async (req: Request, res: Response, next: NextFunction) => {
@@ -101,12 +81,7 @@ const deleteAdminController = async (req: Request, res: Response, next: NextFunc
       data:result
     })
   } catch (error) {
-    SendResponce(res,{
-      statusCode:httpStatus.INTERNAL_SERVER_ERROR,
-      success:true,
-      message:"Single Admin Delete faield",
-      data:error
-    })
+    next(error)
   }
 };
 

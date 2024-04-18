@@ -2,6 +2,8 @@ import express, { Application,Request,Response,NextFunction } from 'express';
 import cors from 'cors'
 import { userRouter } from './App/modules/User/user__Router';
 import { adminRouter } from './App/modules/Admin/admin_Router';
+import router from './App/Router/GlobalRouter';
+import globalErrorHandeler from './App/Error/GlobalError';
 const app:Application =  express()
 
 app.use(cors())
@@ -13,7 +15,8 @@ app.get('/',(req:Request,res:Response)=>{
     })
 })
 
-app.use('/api/v1',userRouter)
-app.use('/api/v1',adminRouter)
+app.use('/api/v1',router)
+app.use(globalErrorHandeler)
+
 
 export default app
