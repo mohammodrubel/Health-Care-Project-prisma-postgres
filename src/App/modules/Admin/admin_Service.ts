@@ -2,15 +2,13 @@ import { Admin, Prisma, PrismaClient, User__Role, User__Status } from "@prisma/c
 import { searchableFields } from "./admin__constant";
 import calculateNumber from "../../shared/pagination";
 import prisma from "../../shared/prisma";
+import { pagination__interface } from "../../Global/pagination__interface";
+import { admin__interface } from "./admin__interface";
+
 
 const getAllAdminService = async (
-  params: { searchTerm?: string },
-  options: {
-    page?: number;
-    limit?: number;
-    sortBy?: string;
-    sortOrder?: string;
-  }
+  params: admin__interface,
+  options: pagination__interface
 ) => {
   const { skip, limit,page, sortBy, sortOrder } = calculateNumber(options);
   const { searchTerm, ...filterData }: { [key: string]: string } = params;
