@@ -32,8 +32,20 @@ const refreshTokenUserController = Catch__async(async(req:Request,res:Response,n
         data:result
     })
 })
+const changePasswordUserController = Catch__async(async(req:Request,res:Response,next:NextFunction)=>{
+    const user = req?.user 
+    const passwordChangeData = req.body
+    const result = await AuthService.changePassword(user,passwordChangeData)
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"login successfull",
+        data:result
+    })
+})
 
 export const AuthController  ={
     loginUserController,
-    refreshTokenUserController
+    refreshTokenUserController,
+    changePasswordUserController
 }

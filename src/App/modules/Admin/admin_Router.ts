@@ -13,8 +13,6 @@ router.get(
   "/",
   Auth(
     User__Role.ADMIN,
-    User__Role.DOCTOR,
-    User__Role.PATIENT,
     User__Role.SUPER_ADMIN
   ),
   adminController.getAllAdminController

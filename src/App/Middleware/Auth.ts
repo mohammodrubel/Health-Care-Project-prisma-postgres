@@ -21,6 +21,8 @@ const Auth = (...roles: string[]) => {
             if (roles.length && !roles.includes(verifiedToken?.role)) {
                 throw new app__error(httpStatus.FORBIDDEN,"You are not authorized!")
             }
+
+            req?.user = verifiedToken
             
             // Continue to the next middleware/controller
             next();
