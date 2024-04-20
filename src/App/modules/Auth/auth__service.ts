@@ -24,7 +24,7 @@ const loginUserService = async(payload:{email:string,password:string})=>{
         role:existingUser.role
     }
     // access Token 
-    const accessToken =await genareateToken(jwtData,process.env.ACCESS_TOKEN_SECRET as string,'1m')
+    const accessToken =await genareateToken(jwtData,process.env.JWT_SECRET  as string,'1m')
     // refresh Token 
     const refreshToken =await genareateToken(jwtData,process.env.REFRESH_TOKEN_SECRET as string,'4m')
 
@@ -56,7 +56,7 @@ const refreshToken = async(payload:string)=>{
         role:isUserExist?.role
     }
     // access Token 
-    const accessToken =await genareateToken(jwtData,process.env.ACCESS_TOKEN_SECRET as string,'1m')
+    const accessToken =await genareateToken(jwtData,process.env.JWT_SECRET as string,'1m')
     return {
         accessToken,
         needPasswordChange:isUserExist.needPasswordChange,
