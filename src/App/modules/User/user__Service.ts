@@ -1,17 +1,24 @@
 import { User__Role } from "@prisma/client"
 import bcrypt from 'bcrypt'
 import prisma from "../../shared/prisma"
+import { file__upload } from "../../Middleware/file__upload"
 
 
-const createAdminService = async(data:any)=>{
-
-    const hasingPassword = await bcrypt.hash(data.password,12)
+const createAdminService = async(req:any)=>{
+    const file = req.file 
+    console.log(req.body)
+        if(file){
+            const uploadCloudinaray = await file__upload.uploadToCloudinary(file)
+            req.body.admin.profilePhoto = uploadCloudinaray?.secure_url
+            console.log(req.body)
+        }
+    const hasingPassword = await bcrypt.hash(req.body.password,12)
     const userData = {
         password:hasingPassword,
         role:User__Role.ADMIN,
-        email:data.admin.email
+        email:req.body.admin.email
     }
-    const adminData = data?.admin 
+    const adminData = req.body?.admin 
     const result = await prisma.$transaction(async(transactionClient)=>{
           await transactionClient.user.create({
             data: userData
@@ -24,7 +31,7 @@ const createAdminService = async(data:any)=>{
         return createAdminData
     })
 
-    console.log(result)
+   
 
     return result
     

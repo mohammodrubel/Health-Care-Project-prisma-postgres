@@ -15,7 +15,7 @@ const Auth = (...roles: string[]) => {
             
             // Verify the token
             const verifiedToken = await verifyToken(token, process.env.JWT_SECRET as string);
-            console.log(verifiedToken);
+            
             
             // If roles are specified and the user's role is not in the allowed roles
             if (roles.length && !roles.includes(verifiedToken?.role)) {

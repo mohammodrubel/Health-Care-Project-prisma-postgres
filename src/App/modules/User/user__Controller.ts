@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 import Catch__async from "../../Middleware/Catch__Async";
 const createAdminController = Catch__async(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await UserService.createAdminService(req.body);
+    const result = await UserService.createAdminService(req);
     SendResponce(res, {
       statusCode: httpStatus.CREATED,
       success: true,
