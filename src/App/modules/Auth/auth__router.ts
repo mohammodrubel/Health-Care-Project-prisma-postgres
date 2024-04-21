@@ -16,5 +16,17 @@ router.post(
   ),
   AuthController.changePasswordUserController
 );
+router.post(
+  "/forgate-password",
+  Auth(
+    User__Role.ADMIN,
+    User__Role.DOCTOR,
+    User__Role.PATIENT,
+    User__Role.SUPER_ADMIN
+  ),
+  AuthController.forgatPasswordController
+);
+router.post("/reset-password",AuthController.resetPasswordController);
+
 
 export const authRouter = router;

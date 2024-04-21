@@ -32,20 +32,45 @@ const refreshTokenUserController = Catch__async(async(req:Request,res:Response,n
         data:result
     })
 })
-const changePasswordUserController = Catch__async(async(req:Request,res:Response,next:NextFunction)=>{
+const changePasswordUserController = Catch__async(async(req:Request & {user?:any},res:Response,next:NextFunction)=>{
     const user = req?.user 
     const passwordChangeData = req.body
     const result = await AuthService.changePassword(user,passwordChangeData)
     SendResponce(res,{
         statusCode:httpStatus.OK,
         success:true,
-        message:"login successfull",
+        message:"Change password successfull",
         data:result
     })
 })
 
+const forgatPasswordController = Catch__async(async(req:Request,res:Response,next:NextFunction)=>{
+    const data = req.body
+    const result = await AuthService.forgatePassword(data)
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"Check your Email ",
+        data:result
+    })
+})
+const resetPasswordController = Catch__async(async(req:Request,res:Response,next:NextFunction)=>{
+    const token = req.headers.authorization || "" 
+    const result = await AuthService.resetPassword(token,req.body)
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"reset password successfull",
+        data:result
+    })
+})
+
+
+
 export const AuthController  ={
     loginUserController,
     refreshTokenUserController,
-    changePasswordUserController
+    changePasswordUserController,
+    forgatPasswordController,
+    resetPasswordController
 }

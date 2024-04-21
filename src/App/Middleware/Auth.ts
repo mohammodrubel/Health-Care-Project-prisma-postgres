@@ -4,7 +4,7 @@ import app__error from "./app__error";
 import httpStatus from "http-status";
 
 const Auth = (...roles: string[]) => {
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (req: Request & {user?:any}, res: Response, next: NextFunction) => {
         try {
             const token = req.headers.authorization;
             
