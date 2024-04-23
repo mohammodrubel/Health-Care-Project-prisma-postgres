@@ -1,12 +1,16 @@
-import { User__Role } from "@prisma/client"
+import { Prisma, User__Role } from "@prisma/client"
 import bcrypt from 'bcrypt'
 import prisma from "../../shared/prisma"
 import { file__upload } from "../../Middleware/file__upload"
 import {fileType } from "../../Global/file"
+import { Request } from "express"
+import { pagination__interface } from "../../Global/pagination__interface"
+import calculateNumber from "../../shared/pagination"
+import { userSearchableFields } from "./user_searchable_field"
 
 
-const createAdminService = async(req:any)=>{
-    const file:fileType = req.file 
+const createAdminService = async(req:Request)=>{
+    const file = req.file as fileType
         if(file){
             const uploadCloudinaray = await file__upload.uploadToCloudinary(file)
             
@@ -38,8 +42,8 @@ const createAdminService = async(req:any)=>{
 
 
 }
-const createDoctorService = async(req:any)=>{
-    const file:fileType = req.file 
+const createDoctorService = async(req:Request)=>{
+    const file = req.file as fileType
         if(file){
             const uploadCloudinaray = await file__upload.uploadToCloudinary(file)
             
@@ -71,8 +75,8 @@ const createDoctorService = async(req:any)=>{
 
 
 }
-const patientDoctorService = async(req:any)=>{
-    const file:fileType = req.file 
+const patientDoctorService = async(req:Request)=>{
+    const file = req.file as fileType
         if(file){
             const uploadCloudinaray = await file__upload.uploadToCloudinary(file)
             
@@ -105,9 +109,72 @@ const patientDoctorService = async(req:any)=>{
 
 }
 
+const getAllUserService = async (
+    params: any,
+    options: pagination__interface
+  ) => {
+    const { skip, limit,page, sortBy, sortOrder } = calculateNumber(options);
+    const { searchTerm, ...filterData }: { [key: string]: string } = params;
+    const addCondition: Prisma.UserWhereInput[] = [];
+  
+    // Partial match
+    if (searchTerm) {
+      addCondition.push({
+        OR: userSearchableFields.map((field) => ({
+          [field]: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        })),
+      });
+    }
+  
+    // Exact match
+    if (Object.keys(filterData).length > 0) {
+      addCondition.push({
+        AND: Object.keys(filterData).map((field) => ({
+          [field]: {
+            equals: filterData[field],
+          },
+        })),
+      });
+    }
+  
+  
+  
+    const whereCondition: Prisma.UserWhereInput = addCondition.length > 0 ? { AND: addCondition } : {};
+  
+    const result = await prisma.user.findMany({
+      where: whereCondition,
+      skip,
+      take: limit,
+      orderBy:
+        sortBy && sortOrder
+          ? {
+              [sortBy]: sortOrder,
+            }
+          : {
+              createdAt: "desc",
+            },
+    });
+  
+    const total = await prisma.user.count({
+      where:whereCondition
+    })
+    return {
+      meta:{
+          page,
+          limit,
+          total
+      },
+      data:result
+    };
+  };
+
 
 export const UserService = {
     createAdminService,
     createDoctorService,
-    patientDoctorService
+    patientDoctorService,
+    getAllUserService
 }

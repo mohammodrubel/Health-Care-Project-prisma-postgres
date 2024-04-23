@@ -6,7 +6,7 @@ import { file__upload } from "../../Middleware/file__upload";
 import { userValidation } from "./user__validation";
 const router = express.Router();
 
-
+router.get('/',userController.getAllUserController)
 
 router.post(
   "/create-admin",file__upload.upload.single('file'),

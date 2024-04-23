@@ -3,6 +3,8 @@ import { UserService } from "./user__Service";
 import SendResponce from "../../shared/SendResponce";
 import httpStatus from "http-status";
 import Catch__async from "../../Middleware/Catch__Async";
+import pick from "../../shared/pick";
+import { userFilterField } from "./user_searchable_field";
 
 
 const createAdminController = Catch__async(
@@ -40,8 +42,21 @@ const createPatientDoctorController = Catch__async(
   }
 );
 
+const getAllUserController = Catch__async(async (req:Request,res:Response,next:NextFunction) => {
+  const filterData = pick(req.query, userFilterField);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await UserService.getAllUserService(filterData, options);
+  SendResponce(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:"all User showen successfully",
+    data:result
+  })
+})
+
 export const userController = {
   createAdminController,
   createDoctorController,
-  createPatientDoctorController
+  createPatientDoctorController,
+  getAllUserController
 };
