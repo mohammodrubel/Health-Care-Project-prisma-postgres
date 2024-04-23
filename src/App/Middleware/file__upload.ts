@@ -3,6 +3,7 @@ import path from "path";
 import fs from 'fs'
 
 import {v2 as cloudinary} from 'cloudinary';
+import { cloudinaryResponce, fileType } from "../Global/file";
           
 cloudinary.config({ 
   cloud_name: 'dydawxcuk', 
@@ -20,13 +21,12 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-const uploadToCloudinary = async (file:any) => {
+const uploadToCloudinary = async (file:any):Promise<cloudinaryResponce | undefined> => {
     return new Promise ((resolve,reject)=>{
         cloudinary.uploader.upload(
             file?.path,
-            { public_id: file?.originalname },
-            (error,result)=>{
+            // { public_id: file?.originalname },
+            (error:Error,result:cloudinaryResponce)=>{ 
                 fs.unlinkSync(file?.path)
                 if(error){
                     reject(error)

@@ -2,15 +2,15 @@ import { User__Role } from "@prisma/client"
 import bcrypt from 'bcrypt'
 import prisma from "../../shared/prisma"
 import { file__upload } from "../../Middleware/file__upload"
+import { cloudinaryResponce, fileType } from "../../Global/file"
 
 
 const createAdminService = async(req:any)=>{
-    const file = req.file 
-    console.log(req.body)
+    const file:fileType = req.file 
         if(file){
             const uploadCloudinaray = await file__upload.uploadToCloudinary(file)
+            
             req.body.admin.profilePhoto = uploadCloudinaray?.secure_url
-            console.log(req.body)
         }
     const hasingPassword = await bcrypt.hash(req.body.password,12)
     const userData = {
