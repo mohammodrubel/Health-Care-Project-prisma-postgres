@@ -9,6 +9,7 @@ import calculateNumber from "../../shared/pagination"
 import { userSearchableFields } from "./user_searchable_field"
 
 
+
 const createAdminService = async(req:Request)=>{
     const file = req.file as fileType
         if(file){
@@ -156,6 +157,15 @@ const getAllUserService = async (
           : {
               createdAt: "desc",
             },
+            select:{
+                id: true,
+                email: true,
+                role: true,
+                needPasswordChange: true,
+                status: true,
+                createdAt: true,
+                updatedAt: true,
+            }
     });
   
     const total = await prisma.user.count({
@@ -170,11 +180,28 @@ const getAllUserService = async (
       data:result
     };
   };
+const updateUserService = async(id:string,status:User__Role)=>{
+    await prisma.user.findUniqueOrThrow({
+        where:{
+            id:id 
+        }
+    })
+
+    const updateData = await prisma.user.update({
+        where:{
+            id:id 
+        },
+        data:status
+    })
+
+    return updateData
+}
 
 
 export const UserService = {
     createAdminService,
     createDoctorService,
     patientDoctorService,
-    getAllUserService
+    getAllUserService,
+    updateUserService
 }

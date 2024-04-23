@@ -54,9 +54,21 @@ const getAllUserController = Catch__async(async (req:Request,res:Response,next:N
   })
 })
 
+const updateUserController = Catch__async(async (req:Request,res:Response,next:NextFunction) => {
+    const id = req.params.id
+  const result = await UserService.updateUserService(id,req.body);
+  SendResponce(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:"update user successfully",
+    data:result
+  })
+})
+
 export const userController = {
   createAdminController,
   createDoctorController,
   createPatientDoctorController,
-  getAllUserController
+  getAllUserController,
+  updateUserController
 };

@@ -6,7 +6,7 @@ import { file__upload } from "../../Middleware/file__upload";
 import { userValidation } from "./user__validation";
 const router = express.Router();
 
-router.get('/',userController.getAllUserController)
+router.get('/',Auth(User__Role.ADMIN,User__Role.SUPER_ADMIN),userController.getAllUserController)
 
 router.post(
   "/create-admin",file__upload.upload.single('file'),
@@ -30,5 +30,8 @@ router.post(
     req.body =  userValidation.PatientZodValidation.parse(JSON.parse(req.body.data))
     return  userController.createPatientDoctorController(req,res,next)
 });
+
+router.patch('/:id/status',Auth(User__Role.ADMIN,User__Role.SUPER_ADMIN),userController.updateUserController)
+
 
 export const userRouter = router;
