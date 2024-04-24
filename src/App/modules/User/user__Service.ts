@@ -109,7 +109,6 @@ const patientDoctorService = async(req:Request)=>{
 
 
 }
-
 const getAllUserService = async (
     params: any,
     options: pagination__interface
@@ -196,6 +195,53 @@ const updateUserService = async(id:string,status:User__Role)=>{
 
     return updateData
 }
+const getMyPfofile = async (userProfile:any)=>{
+  let profileRole ;
+  const userInfo = await prisma.user.findUniqueOrThrow({
+    where:{
+      email:userProfile.email
+    },
+    select:{
+      id:true,
+      email:true,
+      role:true,
+      needPasswordChange:true,
+      status:true,
+    }
+  })
+
+  if(userInfo.role === User__Role.SUPER_ADMIN){
+    profileRole = await prisma.admin.findUniqueOrThrow({
+      where:{
+        email:userInfo.email
+      }
+    })
+  }
+  if(userInfo.role === User__Role.ADMIN){
+    profileRole = await prisma.admin.findUniqueOrThrow({
+      where:{
+        email:userInfo.email
+      }
+    })
+  }
+  if(userInfo.role === User__Role.DOCTOR){
+    profileRole = await prisma.doctor.findUniqueOrThrow({
+      where:{
+        email:userInfo.email
+      }
+    })
+  }
+  if(userInfo.role === User__Role.PATIENT){
+    profileRole = await prisma.patient.findUniqueOrThrow({
+      where:{
+        email:userInfo.email
+      }
+    })
+  }
+
+
+  return {...userInfo,...profileRole}
+}
 
 
 export const UserService = {
@@ -203,5 +249,6 @@ export const UserService = {
     createDoctorService,
     patientDoctorService,
     getAllUserService,
-    updateUserService
+    updateUserService,
+    getMyPfofile
 }

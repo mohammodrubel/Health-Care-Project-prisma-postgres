@@ -34,4 +34,6 @@ router.post(
 router.patch('/:id/status',Auth(User__Role.ADMIN,User__Role.SUPER_ADMIN),userController.updateUserController)
 
 
+router.get('/me',Auth(User__Role.SUPER_ADMIN,User__Role.PATIENT,User__Role.DOCTOR,User__Role.ADMIN),userController.getMyProfieController)
+
 export const userRouter = router;

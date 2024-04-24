@@ -64,11 +64,22 @@ const updateUserController = Catch__async(async (req:Request,res:Response,next:N
     data:result
   })
 })
+const getMyProfieController = Catch__async(async (req:Request ,res:Response,next:NextFunction) => {
+  const userProfile = req.user
+  const result = await UserService.getMyPfofile(userProfile);
+  SendResponce(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:"get your successfully",
+    data:result
+  })
+})
 
 export const userController = {
   createAdminController,
   createDoctorController,
   createPatientDoctorController,
   getAllUserController,
-  updateUserController
+  updateUserController,
+  getMyProfieController
 };
