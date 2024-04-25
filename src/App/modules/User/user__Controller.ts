@@ -74,6 +74,16 @@ const getMyProfieController = Catch__async(async (req:Request ,res:Response,next
     data:result
   })
 })
+const updateMyProfieController = Catch__async(async (req:Request ,res:Response,next:NextFunction) => {
+  const userProfile = req.user
+  const result = await UserService.updateMyProfileService(userProfile,req);
+  SendResponce(res,{
+    statusCode:httpStatus.OK,
+    success:true,
+    message:"update my successfully",
+    data:result
+  })
+})
 
 export const userController = {
   createAdminController,
@@ -81,5 +91,6 @@ export const userController = {
   createPatientDoctorController,
   getAllUserController,
   updateUserController,
-  getMyProfieController
+  getMyProfieController,
+  updateMyProfieController
 };

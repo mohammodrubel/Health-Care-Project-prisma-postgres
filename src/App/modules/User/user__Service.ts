@@ -242,7 +242,55 @@ const getMyPfofile = async (userProfile:any)=>{
 
   return {...userInfo,...profileRole}
 }
+const updateMyProfileService = async(userProfile:any,req:Request)=>{
+  const userInfo = await prisma.user.findUniqueOrThrow({
+    where:{
+      email:userProfile.email,
+      status:userProfile.status 
+    }
+  })
+  const file = req.file as fileType
+    if(file){
+      const uploadToCloudinary = await file__upload.uploadToCloudinary(file)
+      req.body.profilePhoto = uploadToCloudinary?.secure_url
+    }
+  let profileRole ;
+  if(userInfo.role === User__Role.SUPER_ADMIN){
+    profileRole = await prisma.admin.update({
+      where:{
+        email:userInfo.email
+      },
+      data:req.body
+    })
+  }
+  if(userInfo.role === User__Role.ADMIN){
+    profileRole = await prisma.admin.update({
+      where:{
+        email:userInfo.email
+      },
+      data:req.body
+    })
+  }
+  if(userInfo.role === User__Role.DOCTOR){
+    profileRole = await prisma.doctor.update({
+      where:{
+        email:userInfo.email
+      },
+      data:req.body
+    })
+  }
+  if(userInfo.role === User__Role.PATIENT){
+    profileRole = await prisma.patient.update({
+      where:{
+        email:userInfo.email
+      },
+      data:req.body
+    })
+  }
 
+  return {...userInfo}
+
+}
 
 export const UserService = {
     createAdminService,
@@ -250,5 +298,6 @@ export const UserService = {
     patientDoctorService,
     getAllUserService,
     updateUserService,
-    getMyPfofile
+    getMyPfofile,
+    updateMyProfileService
 }

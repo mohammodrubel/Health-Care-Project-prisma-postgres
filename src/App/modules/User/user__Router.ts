@@ -36,4 +36,11 @@ router.patch('/:id/status',Auth(User__Role.ADMIN,User__Role.SUPER_ADMIN),userCon
 
 router.get('/me',Auth(User__Role.SUPER_ADMIN,User__Role.PATIENT,User__Role.DOCTOR,User__Role.ADMIN),userController.getMyProfieController)
 
+router.put(
+  "/update-my-profile",Auth(User__Role.SUPER_ADMIN,User__Role.ADMIN,User__Role.DOCTOR,User__Role.PATIENT),file__upload.upload.single('file'),
+(req:Request,res:Response,next:NextFunction)=>{
+    req.body =  JSON.parse(req.body.data)
+    return  userController.updateMyProfieController(req,res,next)
+});
+
 export const userRouter = router;
