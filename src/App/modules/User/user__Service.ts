@@ -7,6 +7,7 @@ import { Request } from "express"
 import { pagination__interface } from "../../Global/pagination__interface"
 import calculateNumber from "../../shared/pagination"
 import { userSearchableFields } from "./user_searchable_field"
+import { RequestUser } from "../../Global/Global_interface"
 
 
 
@@ -242,11 +243,10 @@ const getMyPfofile = async (userProfile:any)=>{
 
   return {...userInfo,...profileRole}
 }
-const updateMyProfileService = async(userProfile:any,req:Request)=>{
+const updateMyProfileService = async(userProfile:RequestUser,req:Request)=>{
   const userInfo = await prisma.user.findUniqueOrThrow({
     where:{
       email:userProfile.email,
-      status:userProfile.status 
     }
   })
   const file = req.file as fileType

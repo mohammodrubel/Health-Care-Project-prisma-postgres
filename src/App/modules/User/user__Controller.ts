@@ -5,6 +5,7 @@ import httpStatus from "http-status";
 import Catch__async from "../../Middleware/Catch__Async";
 import pick from "../../shared/pick";
 import { userFilterField } from "./user_searchable_field";
+import { RequestUser } from "../../Global/Global_interface";
 
 
 const createAdminController = Catch__async(
@@ -64,7 +65,7 @@ const updateUserController = Catch__async(async (req:Request,res:Response,next:N
     data:result
   })
 })
-const getMyProfieController = Catch__async(async (req:Request ,res:Response,next:NextFunction) => {
+const getMyProfieController = Catch__async(async (req:Request & {user?:RequestUser} ,res:Response,next:NextFunction) => {
   const userProfile = req.user
   const result = await UserService.getMyPfofile(userProfile);
   SendResponce(res,{
@@ -74,9 +75,9 @@ const getMyProfieController = Catch__async(async (req:Request ,res:Response,next
     data:result
   })
 })
-const updateMyProfieController = Catch__async(async (req:Request ,res:Response,next:NextFunction) => {
+const updateMyProfieController = Catch__async(async (req:Request & {user?:RequestUser} ,res:Response,next:NextFunction) => {
   const userProfile = req.user
-  const result = await UserService.updateMyProfileService(userProfile,req);
+  const result = await UserService.updateMyProfileService(userProfile as RequestUser,req);
   SendResponce(res,{
     statusCode:httpStatus.OK,
     success:true,
