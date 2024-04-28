@@ -14,7 +14,41 @@ const createSpecialities = Catch__async(async(req,res,next)=>{
       })
 })
 
+const getAllSpecialities = Catch__async(async(req,res,next)=>{
+    const result = await specialitiesService.getSpecialitiesService()
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"get Specialities successfylly",
+        data:result
+      })
+})
+const deleteSpecialities = Catch__async(async(req,res,next)=>{
+    const id = req.params.id 
+    const result = await specialitiesService.deleteSingleSpecialitiesService(id)
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"Delete Specialities successfylly",
+        data:result
+      })
+})
+
+const findSingleSpecialities = Catch__async(async(req,res,next)=>{
+    const id = req.params.id 
+    const result = await specialitiesService.getSingleSpecialitiesService(id)
+    SendResponce(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"single Specialities successfylly",
+        data:result
+      })
+})
+
 
 export const specialitiesController = {
-    createSpecialities
+    createSpecialities,
+    getAllSpecialities,
+    deleteSpecialities,
+    findSingleSpecialities
 }

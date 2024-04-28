@@ -2,7 +2,7 @@ import express from 'express';
 import { userRouter } from '../modules/User/user__Router';
 import { adminRouter } from '../modules/Admin/admin_Router';
 import { authRouter } from '../modules/Auth/auth__router';
-import { SpecialitiesRouter } from '../modules/Specialities/specialities__roter';
+import { SpecialitiesRouter } from '../modules/Specialities/specialities__router';
 
 const router = express.Router()
 
