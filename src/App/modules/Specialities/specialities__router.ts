@@ -14,4 +14,6 @@ const router = express.Router()
 
     router.delete('/:id',specialitiesController.deleteSpecialities)
     router.get('/:id',specialitiesController.findSingleSpecialities)
+
+    
 export  const SpecialitiesRouter = router

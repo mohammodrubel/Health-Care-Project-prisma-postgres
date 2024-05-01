@@ -87,7 +87,7 @@ model Specialties {
   id                String              @id @default(uuid())
   title             String
   icon              String
-  DoctorSpecialties DoctorSpecialties[]
+  doctorSpecialties DoctorSpecialties[]
 
   @@map("specialities")
 }
@@ -101,7 +101,7 @@ model DoctorSpecialties {
   @@id([specialtiesId, doctorId])
   @@map("doctorSpecialities")
 }
-
+// 32-7 Updating Doctor Data
 enum User__Role {
   SUPER_ADMIN
   PATIENT
