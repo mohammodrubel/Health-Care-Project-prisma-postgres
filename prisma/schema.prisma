@@ -67,18 +67,58 @@ model Doctor {
   @@map("doctors")
 }
 
+model PatientHealthData {
+  id                  String        @id @default(uuid())
+  patientId           String        @unique
+  patient             Patient       @relation(fields: [patientId], references: [id])
+  gender              Gender
+  dateOfBirth         String
+  bloodGroup          BloodGroup
+  hasAllergies        Boolean
+  hasDiabetes         Boolean
+  height              String
+  weight              String
+  smokingStatus       Boolean
+  dietaryPreferences  String
+  pregnancyStatus     Boolean
+  mentalHealthHistory String
+  immunizationStatus  String
+  hasPastSurgeries    Boolean
+  recentAnxiety       Boolean
+  recentDepression    Boolean
+  maritalStatus       MaritalStatus
+  createdAt           DateTime
+  updatedAt           DateTime
+
+  @@map("patientHealthData")
+}
+
+model MedicalReport {
+  id         String   @id @default(uuid())
+  patientId  String
+  patient    Patient  @relation(fields: [patientId], references: [id])
+  reportName String
+  reportLink String
+  createdAt  DateTime
+  updatedAt  DateTime
+
+  @@map("medicalReport")
+}
+
 model Patient {
-  id            String   @id @default(uuid())
-  name          String
-  email         String   @unique
-  profilePhoto  String?
-  contactNumber String
-  address       String?
-  gender        Gender
-  isDeleted     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  user          User     @relation(fields: [email], references: [email])
+  id                String             @id @default(uuid())
+  name              String
+  email             String             @unique
+  profilePhoto      String?
+  contactNumber     String
+  address           String?
+  gender            Gender
+  isDeleted         Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  user              User               @relation(fields: [email], references: [email])
+  patientHealthData PatientHealthData?
+  medicalReport     MedicalReport[]
 
   @@map("patient")
 }
@@ -101,6 +141,7 @@ model DoctorSpecialties {
   @@id([specialtiesId, doctorId])
   @@map("doctorSpecialities")
 }
+
 // 32-7 Updating Doctor Data
 enum User__Role {
   SUPER_ADMIN
@@ -118,4 +159,20 @@ enum User__Status {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum MaritalStatus {
+  MARRIED
+  UNMARRIED
 }
