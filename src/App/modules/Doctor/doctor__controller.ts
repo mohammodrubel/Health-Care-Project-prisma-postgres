@@ -7,6 +7,7 @@ import { DoctorService } from "./doctor__service";
 
 const getAllDoctor = Catch__async(async (req, res, next) => {
   const filterData = pick(req.query, doctorFilterableFields);
+  console.log(filterData)
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
   const result = await DoctorService.getAllDoctorService(filterData, options);
   SendResponce(res, {
