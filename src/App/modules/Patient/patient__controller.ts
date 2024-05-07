@@ -17,7 +17,41 @@ const getAllPatientController = Catch__async(async (req, res, next) => {
       data: result,
     });
   });
+const getSinglePatientController = Catch__async(async (req, res, next) => {
+    const {id} = req.params
+    const result = await PatientService.getSinglePatientService(id);
+    SendResponce(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "single Patient Data showen successfully",
+      data: result,
+    });
+  });
+const deleteSinglePatientController = Catch__async(async (req, res, next) => {
+    const {id} = req.params
+    const result = await PatientService.deletePatientService(id);
+    SendResponce(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "single Patient Data showen successfully",
+      data: result,
+    });
+  });
+const updatedSinglePatientController = Catch__async(async (req, res, next) => {
+    const {id} = req.params
+    const result = await PatientService.updatePatientService(id,req.body);
+    SendResponce(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Updated Patient Data  successfully",
+      data: result,
+    });
+  });
+
 
   export const PatientController = {
-    getAllPatientController
+    getAllPatientController,
+    getSinglePatientController,
+    deleteSinglePatientController,
+    updatedSinglePatientController
   }

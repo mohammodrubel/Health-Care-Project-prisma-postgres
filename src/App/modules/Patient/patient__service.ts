@@ -72,14 +72,38 @@ const getAllPatientService = async (
     data:result
   };
 };
-const getSinglePatientService = async()=>{
+const getSinglePatientService = async(id:string)=>{
+  const findSingleData = await prisma.patient.findUniqueOrThrow({
+    where:{
+      id:id
+    },
+    include:{
+      medicalReport:true,
+      patientHealthData:true
+    }
+  })
 
+  return findSingleData
 }
-const updatePatientService = async()=>{
-
+const updatePatientService = async(id:string,data:any)=>{
+  
 }
-const deletePatientService = async()=>{
-
+const deletePatientService = async(id:string)=>{
+   await prisma.patient.findUniqueOrThrow({
+    where:{
+      id:id
+    }
+  })
+  const deleteSingleData = await prisma.patient.delete({
+    where:{
+      id:id
+    },
+    include:{
+      medicalReport:true,
+      patientHealthData:true
+    }
+  })
+  return deleteSingleData
 }
 
 
