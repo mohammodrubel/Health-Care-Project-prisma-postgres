@@ -1,4 +1,3 @@
-
 import { pagination__interface } from "../../Global/pagination__interface";
 import calculateNumber from "../../shared/pagination";
 import { patient__interface } from "./patient__interface";
@@ -6,15 +5,14 @@ import { patientSearchableFields } from "./patient__constant";
 import { Prisma } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
-
 const getAllPatientService = async (
   params: patient__interface,
   options: pagination__interface
 ) => {
-  const { skip, limit,page, sortBy, sortOrder } = calculateNumber(options);
+  const { skip, limit, page, sortBy, sortOrder } = calculateNumber(options);
   const { searchTerm, ...filterData }: { [key: string]: string } = params;
   const addCondition: Prisma.PatientWhereInput[] = [];
-  
+
   if (searchTerm) {
     addCondition.push({
       OR: patientSearchableFields.map((field) => ({
@@ -26,7 +24,6 @@ const getAllPatientService = async (
     });
   }
 
- 
   // Exact match
   if (Object.keys(filterData).length > 0) {
     addCondition.push({
@@ -37,8 +34,6 @@ const getAllPatientService = async (
       })),
     });
   }
-
-
 
   const whereCondition: Prisma.PatientWhereInput = { AND: addCondition };
 
@@ -54,62 +49,72 @@ const getAllPatientService = async (
         : {
             createdAt: "desc",
           },
-          include:{
-            medicalReport:true,
-            patientHealthData:true
-          }
+    include: {
+      medicalReport: true,
+      patientHealthData: true,
+    },
   });
 
   const total = await prisma.patient.count({
-    where:whereCondition
-  })
+    where: whereCondition,
+  });
   return {
-    meta:{
-        page,
-        limit,
-        total
+    meta: {
+      page,
+      limit,
+      total,
     },
-    data:result
+    data: result,
   };
 };
-const getSinglePatientService = async(id:string)=>{
+const getSinglePatientService = async (id: string) => {
   const findSingleData = await prisma.patient.findUniqueOrThrow({
-    where:{
-      id:id
+    where: {
+      id: id,
     },
-    include:{
-      medicalReport:true,
-      patientHealthData:true
-    }
-  })
+    include: {
+      medicalReport: true,
+      patientHealthData: true,
+    },
+  });
 
-  return findSingleData
-}
-const updatePatientService = async(id:string,data:any)=>{
-  
-}
-const deletePatientService = async(id:string)=>{
-   await prisma.patient.findUniqueOrThrow({
-    where:{
-      id:id
-    }
-  })
+  return findSingleData;
+};
+const updatePatientService = async (id: string, data: any) => {
+  const findSingleData = await prisma.patient.findUniqueOrThrow({
+    where: {
+      id: id,
+    },
+  });
+  const updatedData = await prisma.patient.update({
+    where: {
+      id: id,
+    },
+    data: data,
+  });
+  return updatedData;
+};
+const deletePatientService = async (id: string) => {
+  await prisma.patient.findUniqueOrThrow({
+    where: {
+      id: id,
+    },
+  });
   const deleteSingleData = await prisma.patient.delete({
-    where:{
-      id:id
+    where: {
+      id: id,
     },
-    include:{
-      medicalReport:true,
-      patientHealthData:true
-    }
-  })
-  return deleteSingleData
-}
-
+    include: {
+      medicalReport: true,
+      patientHealthData: true,
+    },
+  });
+  return deleteSingleData;
+};
 
 export const PatientService = {
-    getAllPatientService,
-    getSinglePatientService,
-    updatePatientService,
-    deletePatientService
-}
+  getAllPatientService,
+  getSinglePatientService,
+  updatePatientService,
+  deletePatientService,
+};
