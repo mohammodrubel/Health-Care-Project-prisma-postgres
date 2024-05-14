@@ -37,6 +37,16 @@ const deleteSinglePatientController = Catch__async(async (req, res, next) => {
       data: result,
     });
   });
+const softDeleteSinglePatientController = Catch__async(async (req, res, next) => {
+    const {id} = req.params
+    const result = await PatientService.softDeletePatientService(id);
+    SendResponce(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "single Patient Data showen successfully",
+      data: result,
+    });
+  });
 const updatedSinglePatientController = Catch__async(async (req, res, next) => {
     const {id} = req.params
     const result = await PatientService.updatePatientService(id,req.body);
@@ -53,5 +63,6 @@ const updatedSinglePatientController = Catch__async(async (req, res, next) => {
     getAllPatientController,
     getSinglePatientController,
     deleteSinglePatientController,
-    updatedSinglePatientController
+    updatedSinglePatientController,
+    softDeleteSinglePatientController
   }
