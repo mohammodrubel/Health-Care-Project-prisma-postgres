@@ -5,6 +5,7 @@ import { authRouter } from '../modules/Auth/auth__router';
 import { SpecialitiesRouter } from '../modules/Specialities/specialities__router';
 import { DoctorRouter } from '../modules/Doctor/doctor__router';
 import { PatientRouter } from '../modules/Patient/patient__router';
+import { ScheduleRouter } from '../modules/Schedule/schedule__router';
 
 const router = express.Router()
 
@@ -15,6 +16,7 @@ const router = express.Router()
         {path:"/specialities",routerData:SpecialitiesRouter},
         {path:"/doctor",routerData:DoctorRouter},
         {path:"/patient",routerData:PatientRouter},
+        {path:"/schedule",routerData:ScheduleRouter},
     ]
 
     moduleRoute.forEach(route => router.use(route.path,route.routerData))
