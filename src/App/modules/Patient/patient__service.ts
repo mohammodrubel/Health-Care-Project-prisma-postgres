@@ -170,7 +170,7 @@ const deletePatientService = async (id: string) => {
 
     return result
 };
-const softDeletePatientService = async (id: string) => {
+const softDeletePatientService = async (id: string):Promise<Patient | undefined >  => {
   const result = await prisma.$transaction(async (transectionClient)=>{
     const deletePatientData = await transectionClient.patient.update({
       where:{
@@ -192,6 +192,7 @@ const softDeletePatientService = async (id: string) => {
     
     return deletePatientData
   })
+  return result
 }
 
 

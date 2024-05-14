@@ -43,7 +43,7 @@ const softDeleteSinglePatientController = Catch__async(async (req, res, next) =>
     SendResponce(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "single Patient Data showen successfully",
+      message: "soft delete Patient successfully complete",
       data: result,
     });
   });
